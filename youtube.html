@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Youtube Clone
+        </title>
+        <style>
+            p {
+                font-family: Roboto, Arial;
+                margin-top: 0;
+                margin-bottom: 0;
+            }
+            body {
+                font-family: Roboto, Arial;
+                margin: 0;
+                padding-top: 65px;
+
+            }
+            .thumbnail {
+                width: 100%;
+            }
+            .search-bar {
+                display: block;
+            }
+
+            .video-title {
+                margin-top: 0;
+                font-size: 14px;
+                font-weight: 500;
+                line-height: 20px;
+                margin-bottom: 12px;
+                vertical-align: top;
+            }
+
+            .video-info-div {
+                display: grid;
+                grid-template-columns: 50px 1fr;
+            }
+
+            .profile-pic {
+                width: 40px;
+                border-radius: 30px;
+            }
+            .thumbnail-row {
+                margin-bottom: 12px;
+                position: relative;
+            }
+            .video-time {
+                background-color: rgb(0, 0, 0);
+                color: white;
+                font-family: Roboto;
+                font-size: 12px;
+                font-weight: 500;
+                position: absolute;
+                bottom: 8px;
+                right: 5px;
+                padding:4px 10px;
+                border-radius: 2px;
+            }
+            .video-author, 
+            .video-stats {
+                font-size: 12px;
+                color: rgb (96, 96, 96);
+            }
+            .video-author {
+                margin-bottom: 4px;
+            }
+            .video-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+                column-gap: 15px;
+                row-gap: 40px;
+            }
+            @media (max-width: 750px) {
+                .video-grid {
+                    grid-template-columns: 1fr 1fr;
+                }
+            }
+            @media (min-width: 1000px) {
+                .video-grid {
+                    grid-template-columns: 1fr 1fr 1fr 1fr;
+                }
+            }
+            @media (min-width: 751px) and (max-width: 999px) {
+                .video-grid {
+                    grid-template-columns: 1fr 1fr 1fr;
+                }
+            }
+
+            .header {
+                height: 55px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                position: fixed;
+                top: 0px;
+                left: 0px;
+                right: 0px;
+                background-color: white;
+                border-bottom-width: 1px;
+                border-bottom-style: solid;
+                border-bottom-color: rgb(207, 207, 207);
+                z-index: 100;
+            }
+            .left-section {
+                display: flex;
+                align-items: center;
+            }
+            .hamburger-menu {
+                height: 24px;
+                margin-left: 24px;
+                margin-right: 20px;
+            }
+            .youtube-logo {
+                height: 20px;
+            }
+            .middle-section {
+                flex: 1;
+                flex-direction: row;
+                margin-left: 70px;
+                margin-right: 35px;
+                max-width: 500px;
+                display: flex;
+                align-items: center;
+            }
+            .search-bar {
+                flex: 1;
+                height: 36px;
+                padding-left: 10px;
+                font-size: 16px;
+                border:1px solid rgb(192, 192, 192);
+                border-radius: 2px;
+                box-shadow: inset 1px 2px 3px rgba(0, 0, 0, 0.05);
+                width: 0;
+            }
+            .search-icon {
+                height: 25px;
+                margin-top: 4px;
+            }
+            .search-button {
+                height: 40px;
+                width: 66px;
+                background-color: rgb(240, 240, 240);
+                border-width: 1px;
+                border-color:rgb(192, 192, 192);
+                border-style: solid;
+                margin-left:-1px;
+                margin-right: 10px;
+                position:relative;
+            }
+            .tooltip {
+                position: absolute;
+                background-color: gray;
+                color: white;
+                padding-top: 4px;
+                padding-bottom:4px;
+                padding-left: 8px;
+                padding-right: 8px;
+                border-radius: 2px;
+                font-size: 12px;
+                bottom: -30px;
+                opacity: 0;
+            }
+            .search-button,
+            .voice-search-button,
+            .upload-button,
+            .yt-apps-button,
+            .noti-button {
+                justify-content: center;
+                display: flex;
+                align-items: center;
+                position:relative;
+            }
+            .search-button:hover,
+            .voice-search-button:hover,
+            .upload-button:hover,
+            .yt-apps-button:hover,
+            .noti-button:hover {
+                cursor: pointer;
+            }
+    
+            .search-button:hover .tooltip,
+            .voice-search-button:hover .tooltip,
+            .upload-button:hover .tooltip,
+            .yt-apps-button:hover .tooltip,
+            .noti-button:hover .tooltip {
+                opacity: 1;
+                transition: 0.15s;
+                pointer-events: none;
+                white-space: nowrap;
+            }
+            .search-bar::placeholder {
+                font-size: 16px;
+            }
+            .voice-search-button {
+                height: 40px;
+                width: 40px;
+                border-radius: 20px;
+                border: none;
+                background-color: (245, 245, 245);
+            }
+            .voice-search-icon {
+                width: 23px;
+                margin-top: 4px;
+            }
+            .right-section {
+                width: 200px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                margin-right: 18px;
+            }
+            .upload-button,
+            .yt-apps-button,
+            .noti-button, 
+            .profile-channel-button {
+                width: 40px;
+                height: 40px;
+                border: none;
+                border-radius: 20px;
+                background-color: white;
+            }
+            .profile-channel-button{
+                margin-right: 20px;
+            }
+            .upload-icon,
+            .yt-apps,
+            .noti-icon {
+                width: 23px;
+            }
+            .user-pfp {
+                height: 40px;
+                width: 40px;
+                border-radius: 20px;
+                margin-right: 0;
+            }
+            .noti-icon-container {
+                position: relative;
+            }
+            .noti-count {
+                position: absolute;
+                top: -2px;
+                right: -2px;
+                background-color: red;
+                color: white;
+                font-family: Roboto, Arial;
+                font-size: 11px;
+                padding-left: 5px;
+                padding-right: 5px;
+                padding-top: 2px;
+                padding-bottom: 2px;
+                border-radius: 10px;
+            }
+            .sidebar {
+                background-color: white;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                top: 55px;
+                width: 72px;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+            }
+            .home-button,
+            .explore-button,
+            .subscriptions-button,
+            .originals-button,
+            .yt-music-button, 
+            .music-button,
+            .library-button {
+                background-color: white;
+                width: 72px;
+                border: none;
+                height: 78px;
+            }
+            .home-button {
+                background-color: white;
+            }
+            .sidebar-icon {
+                width: 24px;
+            }
+            .sidebar-text {
+                font-size: 10px;
+                padding-top: 5px;
+            }
+            .home-button:hover,
+            .explore-button:hover,
+            .subscriptions-button:hover,
+            .originals-button:hover,
+            .yt-music-button:hover,
+            .library-button:hover {
+                background-color: rgb(226, 226, 226);
+                cursor: pointer;
+            }
+            body {
+                margin: 0;
+                padding-top: 80px;
+                padding-left: 80px;
+            }
+        </style>
+    </head>
+    <body>
+        <header class = "header">
+            <div class = "left-section">
+                <img  class = "hamburger-menu" src = "icons/hamburger-menu.svg">
+                <img class = "youtube-logo" src = "icons/youtube-logo.svg">
+            </div>
+            <div class = "middle-section">
+                <input class = "search-bar" type = "text" placeholder = "Search">
+                <button class = "search-button">
+                    <img class = "search-icon"src= "icons/search.svg">
+                    <div class = "tooltip">Search</div>
+                </button>
+                <button class = "voice-search-button">
+                    <img class = "voice-search-icon" src = "icons/voice-search-icon.svg">
+                    <div class = "tooltip">Search with your voice</div>
+                </button>
+            </div>
+            <div class = "right-section">
+                <button class = "upload-button">
+                    <img class = "upload-icon" src = "icons/upload.svg">
+                    <div class = "tooltip">Create</div>
+                </button>
+                <button class = "yt-apps-button">
+                    <img class = "yt-apps" src = "icons/youtube-apps.svg">
+                    <div class = "tooltip">YouTube apps</div>
+                </button>
+                <button class = "noti-button">
+                    <div class = "noti-icon-container">
+                        <img class = "noti-icon" src = "icons/notifications.svg">
+                        <div class = "noti-count">8</div>
+                        <div class = "tooltip">Notifications</div>
+                    </div>
+                </button>
+                <img class = "user-pfp" src = "channel-pfps/my-channel.jpg">
+            </header>
+    
+        </div>
+        <nav class = "sidebar">
+            <div>
+                <button class = "home-button">
+                    <img class = "sidebar-icon" src = "icons/home-yt-icon.svg">
+                    <p class = "sidebar-text">Home</p>
+                </button>
+            </div>
+            <div>
+                <button class = "explore-button">
+                    <img class = "sidebar-icon" src = "icons/explore-icon.svg">
+                    <p class = "sidebar-text">Explore</p>
+                </button>
+            </div>
+            <div>
+                <button class = "subscriptions-button">
+                    <img class = "sidebar-icon" src = "icons/subscriptions-icon.svg">
+                    <p class = "sidebar-text">Subscriptions</p>
+                </button>
+            </div>
+            <div>
+                <button class = "originals-button">
+                    <img class = "sidebar-icon" src = "icons/originals-icon.svg">
+                    <p class = "sidebar-text">Originals</p>
+                </button>
+            </div>
+            <div>
+                <button class = "yt-music-button">
+                    <img class = "sidebar-icon" src = "icons/youtube-music-icon.svg">
+                    <p class = "sidebar-text">Youtube Music</p>
+                </button>
+            </div>
+            <div>
+                <button class = "library-button">
+                    <img class = "sidebar-icon" src = "icons/library-icon.svg">
+                    <p class = "sidebar-text">Library</p>
+                </button>
+            </div>
+        </nav>
+        
+        <main>
+                <div class = "video-grid">
+                    <div class = "video-preview">
+                        <div class = "thumbnail-row">
+                            <img class = "thumbnail" src = "thumbnails/Newjeans-omg-thumbnail.webp">
+                            <div class = "video-time">6:34</div>
+                        </div>
+                        
+                <div class = "video-info-div">
+                    <div class = "channel-pic">
+                        <img class = "profile-pic" src = "channel-pfps/hybe pfp.jpg">
+                    </div>
+                    <div class = "video-info">
+                        <p class = "video-title">
+                            NewJeans (뉴진스) 'OMG' Official MV
+                            </p>
+                            <p class = "video-author">
+                                HYPE LABELS
+                            </p>
+                            <p class = "video-stats">
+                                17M views &#183; 4 weeks ago
+                            </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class = "video-preview">
+                <div class = "thumbnail-row">
+                    <img class = "thumbnail" src = "thumbnails/zias-thumbnail.webp">
+                    <div class = "video-time">11:24</div>
+                </div>
+                <div class = "video-info-div">
+                    <div class = "channel-pic">
+                        <img class = "profile-pic" src = "channel-pfps/zias-channel-pic.jpg">
+                    </div>
+                    <div class = "video-info">
+                        <p class = "video-title">
+                            RiceGum - God Church ( Official Music Video )- REACTION
+                            </p>
+                            <p class = "video-author">
+                                ZIAS!
+                            </p>
+                            <p class = "video-stats">
+                                8.7M views &#183; 5 years ago
+                            </p>
+                    </div>
+                    
+                </div>
+
+            </div> 
+            <div class = "video-preview">
+                <div class = "thumbnail-row">
+                    <img class = "thumbnail" src = "thumbnails/2019-finals-thumbnail.webp">
+                    <div class = "video-time">6:20</div>
+                </div>
+                <div class = "video-info-div">
+                    <div class = "channel-pic">
+                        <img class = "profile-pic" src = "channel-pfps/hoh-channel-pic.jpg">
+                    </div>
+                    <div class = "video-info">
+                        <p class = "video-title">
+                            Final Seconds of 2019 NBA Finals Game 6 | Toronto Celebration | Raptors vs Warriors
+                            </p>
+                            <p class = "video-author">
+                                House of Highlights
+                            </p>
+                            <p class = "video-stats">
+                                9.7M views &#183; 3 years ago
+                            </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class = "video-preview">
+                <div class = "thumbnail-row">
+                    <img class = "thumbnail" src = "thumbnails/bea-thumbnail.jpg">
+                    <div class = "video-time">2:17</div>
+                </div>
+                <div class = "video-info-div">
+                    <div class = "channel-pic">
+                        <img class = "profile-pic" src = "channel-pfps/Wfuv-pfp.jpg">
+                    </div>
+                    <div class = "video-info">
+                        <p class = "video-title">
+                            beabadoobee - "Glue Song" (Live at WFUV)
+                            </p>
+                            <p class = "video-author">
+                                WFUV Public Radio
+                            </p>
+                            <p class = "video-stats">
+                                319K views &#183; 2 months ago
+                            </p>
+                    </div>
+                    
+                </div>
+
+            </div> 
+            <div class = "video-preview">
+                <div class = "thumbnail-row">
+                    <img class = "thumbnail" src = "thumbnails/2016-finals-thumbnail.webp">
+                    <div class = "video-time">10:45</div>
+                </div>
+                <div class = "video-info-div">
+                    <div class = "channel-pic">
+                        <img class = "profile-pic" src = "channel-pfps/nba-pfp.jpg">
+                    </div>
+                    <div class = "video-info">
+                        <p class = "video-title">
+                            Final 3:39 of Game 7 of the 2016 NBA Finals | Cavaliers vs Warriors
+                            </p>
+                            <p class = "video-author">
+                                NBA
+                            </p>
+                            <p class = "video-stats">
+                                27M views &#183; 6 years ago
+                            </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class = "video-preview">
+                <div class = "thumbnail-row">
+                    <img class = "thumbnail" src = "thumbnails/jcole-change-thumbnail.webp">
+                    <div class = "video-time">4:24</div>
+                </div>
+                <div class = "video-info-div">
+                    <div class = "channel-pic">
+                        <img class = "profile-pic" src = "channel-pfps/wolee-pfp.jpg">
+                    </div>
+                    <div class = "video-info">
+                        <p class = "video-title">
+                            J. Cole - Change [Official Music Video]
+                            </p>
+                            <p class = "video-author">
+                                Wole E
+                            </p>
+                            <p class = "video-stats">
+                                10M views &#183; 5 years ago
+                            </p>
+                    </div>
+                    
+                </div>
+
+            </div> 
+
+
+            <div class = "video-preview">
+                <div class = "thumbnail-row">
+                    <img class = "thumbnail" src = "thumbnails/kakashi-vs-obito-thumbnail.webp">
+                    <div class = "video-time">2:56</div>
+                </div>
+                <div class = "video-info-div">
+                    <div class = "channel-pic">
+                        <img class = "profile-pic" src = "channel-pfps/crunnchyroll-pfp.jpg">
+                    </div>
+                    <div class = "video-info">
+                        <p class = "video-title">
+                            Kakashi vs Obito | Naruto Shippuden
+                            </p>
+                            <p class = "video-author">
+                                Cruncyroll Collections
+                            </p>
+                            <p class = "video-stats">
+                                18M views &#183; 3 years ago
+                            </p>
+                    </div>
+                    
+                </div>
+
+            </div> 
+
+            <div class = "video-preview">
+                <div class = "thumbnail-row">
+                    <img class = "thumbnail" src = "thumbnails/passionfruit-thumbnail.webp">
+                    <div class="video-time">4:59</div>
+                </div>
+                <div class = "video-info-div">
+                    <div class = "channel-pic">
+                        <img class = "profile-pic" src = "channel-pfps/drake-pfp.jpg">
+                    </div>
+                    <div class = "video-info">
+                        <p class = "video-title">
+                            Passionfruit
+                            </p>
+                            <p class = "video-author">
+                                Drake
+                            </p>
+                            <p class = "video-stats">
+                                140M views &#183; 4 years ago
+                            </p>
+                    </div>
+                    
+                </div>
+
+            </div> 
+
+            <div class = "video-preview">
+                <div class = "thumbnail-row">
+                    <img class = "thumbnail" src = "thumbnails/bc-thumbnail.webp">
+                    <div class = "video-time">4:24</div>
+                </div>
+                <div class = "video-info-div">
+                    <div class = "channel-pic">
+                        <img class = "profile-pic" src = "channel-pfps/crunnchyroll-pfp.jpg">
+                    </div>
+                    <div class = "video-info">
+                        <p class = "video-title">
+                            Black Clover - Opening 10 | Black Catcher
+                            </p>
+                            <p class = "video-author">
+                                Crunchyroll Collection
+                            </p>
+                            <p class = "video-stats">
+                                10M views &#183; 3 years ago
+                            </p>
+                    </div>
+                    
+                </div>
+
+            </div> 
+
+            <div class = "video-preview">
+                <div class = "thumbnail-row">
+                    <img class = "thumbnail" src = "thumbnails/after-hours-thumbnail.webp">
+                    <div class = "video-time">6:02</div>
+                </div>
+                <div class = "video-info-div">
+                    <div class = "channel-pic">
+                        <img class = "profile-pic" src = "channel-pfps/the-weeknd-pfp.jpg">
+                    </div>
+                    <div class = "video-info">
+                        <p class = "video-title">
+                            The Weeknd - After Hours (Audio)
+                            </p>
+                            <p class = "video-author">
+                                The Weeknd
+                            </p>
+                            <p class = "video-stats">
+                                119M views &#183; 2 years ago
+                            </p>
+                    </div>
+                    
+                </div>
+
+            </div> 
+
+            <div class = "video-preview">
+                <div class = "thumbnail-row">
+                    <img class = "thumbnail" src = "thumbnails/luffy-thumbnail.webp">
+                    <div class = "video-time">1:40</div>
+                </div>
+                <div class = "video-info-div">
+                    <div class = "channel-pic">
+                        <img class = "profile-pic" src = "channel-pfps/crunnchyroll-pfp.jpg">
+                    </div>
+                    <div class = "video-info">
+                        <p class = "video-title">
+                            Luffy Uses Snake-Man on Kaido | One Piece
+                            </p>
+                            <p class = "video-author">
+                                Crunchyroll Collection
+                            </p>
+                            <p class = "video-stats">
+                                2M views &#183; 8 days ago
+                            </p>
+                    </div>
+                    
+                </div>
+
+            </div> 
+
+            <div class = "video-preview">
+                <div class = "thumbnail-row">
+                    <img class = "thumbnail" src = "thumbnails/found-thumbnail.webp">
+                    <div class = "video-time">2: 31</div>
+                </div>
+                <div class = "video-info-div">
+                    <div class = "channel-pic">
+                        <img class = "profile-pic" src = "channel-pfps/tems-pfp.jpg">
+                    </div>
+                    <div class = "video-info">
+                        <p class = "video-title">
+                            Tems - Found(Audio) ft. Brent Faiyaz
+                            </p>
+                            <p class = "video-author">
+                                Tems
+                            </p>
+                            <p class = "video-stats">
+                                8M views &#183; 1 year ago
+                            </p>
+                    </div>
+                    
+                </div>
+
+            </div>  -->
+        </div>
+    
+        </main>
+        
+                
+    </body>
+</html>
